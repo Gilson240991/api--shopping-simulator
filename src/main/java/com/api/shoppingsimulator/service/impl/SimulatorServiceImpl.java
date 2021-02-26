@@ -40,8 +40,8 @@ public class SimulatorServiceImpl implements SimulatorService {
             return response;
         }
 
-        if(!validateProductOfClient(infoClient)){
-            response.setException(ApiExceptionEnum.S0001.getException());
+        if(validateProductOfClient(infoClient)){
+            response.setException(ApiExceptionEnum.S0003.getException());
             return response;
         }
 
@@ -82,7 +82,7 @@ public class SimulatorServiceImpl implements SimulatorService {
     }
 
     private LocalDate buildDateQuota(LocalDate dateBuy,SimulatorRequest request, int count) {
-        LocalDate datePayment = LocalDate.of(dateBuy.getYear(), dateBuy.getMonth(), request.getPayDay());
+        LocalDate datePayment = LocalDate.of(dateBuy.getYear(), dateBuy.getMonth(), Integer.parseInt(request.getPayDay()));
         return datePayment.plusMonths(count+1);
     }
 
@@ -102,7 +102,7 @@ public class SimulatorServiceImpl implements SimulatorService {
       }
 
     private boolean validateProductOfClient(List<Client> info) {
-        return  Optional.ofNullable(info.get(0).getProducts()).isPresent();
+        return  info.get(0).getProducts().isEmpty();
     }
 
     public List<Client> infoClientByDni(String documentNumber) {

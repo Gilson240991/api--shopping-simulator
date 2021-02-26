@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payment {
+public class Payment{
     private Double quotaAmount;
     private String currency;
     private LocalDate firstQuota;
