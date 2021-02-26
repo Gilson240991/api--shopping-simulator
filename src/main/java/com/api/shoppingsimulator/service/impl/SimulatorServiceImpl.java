@@ -1,6 +1,6 @@
 package com.api.shoppingsimulator.service.impl;
 
-import com.api.shoppingsimulator.ApiExceptionEnum;
+import com.api.shoppingsimulator.util.enums.ApiExceptionEnum;
 import com.api.shoppingsimulator.api.response.Payment;
 import com.api.shoppingsimulator.api.request.SimulatorRequest;
 import com.api.shoppingsimulator.api.response.SimulatorResponse;
@@ -8,6 +8,7 @@ import com.api.shoppingsimulator.entity.Card;
 import com.api.shoppingsimulator.entity.Client;
 import com.api.shoppingsimulator.repository.SimulatorRepository;
 import com.api.shoppingsimulator.service.SimulatorService;
+import com.api.shoppingsimulator.util.Constants;
 import com.api.shoppingsimulator.util.Response;
 import com.api.shoppingsimulator.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -68,16 +67,16 @@ public class SimulatorServiceImpl implements SimulatorService {
         List<Payment> listPayment = new ArrayList<>();
         Integer quota = simulatorRequest.getQuota();
         double quotaAmount = calculateQuota(simulatorRequest);
-        LocalDate dateBuy = LocalDate.parse(simulatorRequest.getDateBuy(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        LocalDate dateBuy = LocalDate.parse(simulatorRequest.getDateBuy(), DateTimeFormatter.ofPattern(Constants.DATE_PATTERN));
 
         IntStream.range(0, quota)
                 .forEach(i ->
                         listPayment.add(Payment.builder()
-                        .quotaAmount(quotaAmount)
-                        .currency(simulatorRequest.getCurrency())
-                        .firstQuota(buildDateQuota(dateBuy,simulatorRequest,i))
-                        .state("Exitoso")
-                        .build()));
+                                .quotaAmount(quotaAmount)
+                                .currency(simulatorRequest.getCurrency())
+                                .firstQuota(buildDateQuota(dateBuy,simulatorRequest,i))
+                                .state(Constants.HAPPY_CASE)
+                                .build()));
         return listPayment;
     }
 
